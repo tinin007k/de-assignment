@@ -6,12 +6,12 @@ import org.apache.spark.sql.functions._
 import com.aruba.arch.DataTransformTrait
 import org.apache.spark.sql.SaveMode
 import org.apache.log4j.Logger
-import org.apache.hadoop.fs.{FileSystem, Path}
+import org.apache.hadoop.fs.{ FileSystem, Path }
 
 object DataTransformUtility extends DataTransformTrait {
 
   val log = Logger.getLogger(getClass.getName)
-  
+
   def dataTransformationTriggerUtility(preTransformDf: DataFrame, spark: SparkSession, configBasePath: String): Unit = {
     val fs = FileSystem.get(spark.sparkContext.hadoopConfiguration)
     val findDailyPeakHourfileExists = fs.exists(new Path(configBasePath + "//findDailyPeakHour//"))
@@ -23,39 +23,39 @@ object DataTransformUtility extends DataTransformTrait {
     val categoryTripByTotalAmountfileExists = fs.exists(new Path(configBasePath + "//categoryTripByTotalAmount//"))
     try {
       log.info("Executing FindDailyPeakHour")
-      if(!findDailyPeakHourfileExists){
-      val findDailyPeakHourDf = DataTransformUtility.findDailyPeakHourDf(preTransformDf, spark)
-      findDailyPeakHourDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//findDailyPeakHour//")
+      if (!findDailyPeakHourfileExists) {
+        val findDailyPeakHourDf = DataTransformUtility.findDailyPeakHourDf(preTransformDf, spark)
+        findDailyPeakHourDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//findDailyPeakHour//")
       }
       log.info("Executing AvgAmountPerPaymentType")
-      if(!avgAmountPerPaymentTypefileExists){
-      val avgAmountPerPaymentTypeDf = DataTransformUtility.avgAmountPerPaymentTypeDf(preTransformDf, spark)
-      avgAmountPerPaymentTypeDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//avgAmountPerPaymentType//")
+      if (!avgAmountPerPaymentTypefileExists) {
+        val avgAmountPerPaymentTypeDf = DataTransformUtility.avgAmountPerPaymentTypeDf(preTransformDf, spark)
+        avgAmountPerPaymentTypeDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//avgAmountPerPaymentType//")
       }
       log.info("Executing AnomaliesAvgTripDistanceVendorwise")
-      if(!anomaliesAvgTripDistanceVendorwisefileExists){
-      val anomaliesAvgTripDistanceVendorwiseDf = DataTransformUtility.anomaliesAvgTripDistanceVendorwiseDf(preTransformDf, spark)
-      anomaliesAvgTripDistanceVendorwiseDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//anomaliesAvgTripDistanceVendorwise//")
+      if (!anomaliesAvgTripDistanceVendorwisefileExists) {
+        val anomaliesAvgTripDistanceVendorwiseDf = DataTransformUtility.anomaliesAvgTripDistanceVendorwiseDf(preTransformDf, spark)
+        anomaliesAvgTripDistanceVendorwiseDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//anomaliesAvgTripDistanceVendorwise//")
       }
       log.info("Executing AnomalousTripVendorwise")
-      if(!anomalousTripVendorwisefileExists){
-      val anomalousTripVendorwiseDf = DataTransformUtility.anomalousTripVendorwiseDf(preTransformDf, spark)
-      anomalousTripVendorwiseDf.coalesce(4).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//anomalousTripVendorwise//")
+      if (!anomalousTripVendorwisefileExists) {
+        val anomalousTripVendorwiseDf = DataTransformUtility.anomalousTripVendorwiseDf(preTransformDf, spark)
+        anomalousTripVendorwiseDf.coalesce(4).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//anomalousTripVendorwise//")
       }
       log.info("Executing AvgDistancePerRateCodeId")
-      if(!avgDistancePerRateCodeIdfileExists){
-      val avgDistancePerRateCodeIdDf = DataTransformUtility.avgDistancePerRateCodeIdDf(preTransformDf, spark)
-      avgDistancePerRateCodeIdDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//avgDistancePerRateCodeId//")
+      if (!avgDistancePerRateCodeIdfileExists) {
+        val avgDistancePerRateCodeIdDf = DataTransformUtility.avgDistancePerRateCodeIdDf(preTransformDf, spark)
+        avgDistancePerRateCodeIdDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//avgDistancePerRateCodeId//")
       }
       log.info("Executing RankVendorIdByFareAmount")
-      if(!rankVendorIdByFareAmountfileExists){
-      val rankVendorIdByFareAmountDf = DataTransformUtility.rankVendorIdByFareAmountDf(preTransformDf, spark)
-      rankVendorIdByFareAmountDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//rankVendorIdByFareAmount//")
+      if (!rankVendorIdByFareAmountfileExists) {
+        val rankVendorIdByFareAmountDf = DataTransformUtility.rankVendorIdByFareAmountDf(preTransformDf, spark)
+        rankVendorIdByFareAmountDf.coalesce(1).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//rankVendorIdByFareAmount//")
       }
       log.info("Executing CategoryTripByTotalAmountDf")
-      if(!categoryTripByTotalAmountfileExists){
-      val categoryTripByTotalAmountDf = DataTransformUtility.categoryTripByTotalAmountDf(preTransformDf, spark)
-      categoryTripByTotalAmountDf.coalesce(4).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//categoryTripByTotalAmount//")
+      if (!categoryTripByTotalAmountfileExists) {
+        val categoryTripByTotalAmountDf = DataTransformUtility.categoryTripByTotalAmountDf(preTransformDf, spark)
+        categoryTripByTotalAmountDf.coalesce(4).write.mode(SaveMode.Overwrite).option("header", "true").option("compression", "gzip").csv(configBasePath + "//categoryTripByTotalAmount//")
       }
     } catch {
       case t: Throwable =>
