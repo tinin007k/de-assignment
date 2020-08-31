@@ -1,0 +1,7 @@
+20/08/30 21:36:03 INFO ArubaUsecase$: Starting Spark application
+20/08/30 21:36:12 INFO ArubaUsecase$: Dataframe read from input file is successful
+20/08/30 21:36:12 INFO ArubaUsecase$: Data pre-processing starts
+20/08/30 21:36:38 INFO ArubaUsecase$: DeDuplication done. Number of duplicate records found: 1
+20/08/30 21:36:38 INFO ArubaUsecase$: Data pre-processing ends
+20/08/30 21:38:27 INFO ArubaUsecase$: Count of total records: 8759874 Count of Records which are flagged anomalous: 2295674
+20/08/30 21:39:45 INFO ArubaUsecase$: Stopping Spark application
